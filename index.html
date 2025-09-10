@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Happy Birthday Lalni Shukla</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      overflow: hidden;
+    }
+    h1 {
+      font-size: 2.5em;
+      margin-top: 20px;
+      color: #ff4081;
+      animation: glow 2s infinite alternate;
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #ff80ab; }
+      to { text-shadow: 0 0 20px #ff4081, 0 0 30px #ff80ab; }
+    }
+    .shayari {
+      font-size: 1.2em;
+      margin: 20px auto;
+      max-width: 600px;
+      line-height: 1.6;
+      color: #333;
+      background: rgba(255, 255, 255, 0.7);
+      padding: 15px;
+      border-radius: 12px;
+    }
+    .from {
+      margin-top: 25px;
+      font-size: 1.1em;
+      font-weight: bold;
+      color: #444;
+    }
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+    .theme-buttons {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      gap: 10px;
+    }
+    .theme-buttons button {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      color: white;
+    }
+    .sunset-btn { background: linear-gradient(to right, #ff9a9e, #fad0c4); color: #000; }
+    .pastel-btn { background: linear-gradient(to right, #a1c4fd, #c2e9fb); color: #000; }
+    .neon-btn { background: linear-gradient(to right, #0f0c29, #302b63, #24243e); }
+    .birthday-pic {
+  width: 220px;
+  height: auto;
+  border-radius: 20px;
+  box-shadow: 0 0 25px rgba(255, 182, 193, 0.8);
+  margin-top: 20px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+  </style>
+</head>
+<body>
+  <div class="theme-buttons">
+    <button class="sunset-btn" onclick="setTheme('sunset')">Sunset</button>
+    <button class="pastel-btn" onclick="setTheme('pastel')">Pastel</button>
+    <button class="neon-btn" onclick="setTheme('neon')">Neon</button>
+  </div>
+
+  <h1>🎉🎂 Happy Birthday My Jaan <br> Lalni Shukla 🎂🎉</h1>
+  <div class="shayari">
+    🌸 <em>Har khushi tumhari rahe,<br>
+    Har gham tumse door rahe,<br>
+    Tumhari zindagi me roshni rahe,<br>
+    Har din tumhara shaandar rahe.</em> 🌸
+  </div>
+  <div class="from">💖 Wish by, <br> — SARTHAK KUMAR 💖</div>
+  <div class="photo-container">
+  <img src="image/pic.jpg" alt="Lalni Shukla" class="birthday-pic">
+</div>
+
+
+  <canvas id="balloons"></canvas>
+  <canvas id="confetti"></canvas>
+
+  <script>
+    const canvas = document.getElementById('balloons');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    class Balloon {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = canvas.height + 100;
+        this.size = 20 + Math.random() * 30;
+        this.speed = 1 + Math.random() * 2;
+        this.color = `hsl(${Math.random() * 360}, 70%, 60%)`;
+      }
+      update() { this.y -= this.speed; }
+      draw() {
+        ctx.beginPath();
+        ctx.ellipse(this.x, this.y, this.size * 0.6, this.size, 0, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+      }
+    }
+
+    let balloons = [];
+    function addBalloon() {
+      if (balloons.length < 30) balloons.push(new Balloon());
+    }
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      balloons.forEach((b, i) => {
+        b.update();
+        b.draw();
+        if (b.y + b.size < 0) balloons.splice(i, 1);
+      });
+      requestAnimationFrame(animate);
+    }
+    setInterval(addBalloon, 800);
+    animate();
+
+    // Confetti burst
+    const confettiCanvas = document.getElementById('confetti');
+    const cctx = confettiCanvas.getContext('2d');
+    confettiCanvas.width = window.innerWidth;
+    confettiCanvas.height = window.innerHeight;
+
+    let confetti = [];
+    class ConfettiPiece {
+      constructor() {
+        this.x = Math.random() * confettiCanvas.width;
+        this.y = Math.random() * confettiCanvas.height - confettiCanvas.height;
+        this.size = 5 + Math.random() * 5;
+        this.speed = 2 + Math.random() * 3;
+        this.color = `hsl(${Math.random() * 360}, 70%, 50%)`;
+      }
+      update() { this.y += this.speed; if (this.y > confettiCanvas.height) this.y = -10; }
+      draw() {
+        cctx.fillStyle = this.color;
+        cctx.fillRect(this.x, this.y, this.size, this.size);
+      }
+    }
+    for (let i = 0; i < 200; i++) confetti.push(new ConfettiPiece());
+    function animateConfetti() {
+      cctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+      confetti.forEach(c => { c.update(); c.draw(); });
+      requestAnimationFrame(animateConfetti);
+    }
+    animateConfetti();
+
+    // Theme change with buttons
+    function setTheme(theme) {
+      switch (theme) {
+        case 'sunset':
+          document.body.style.background = 'linear-gradient(to top, #ff9a9e, #fad0c4)';
+          break;
+        case 'pastel':
+          document.body.style.background = 'linear-gradient(to top, #a1c4fd, #c2e9fb)';
+          break;
+        case 'neon':
+          document.body.style.background = 'linear-gradient(to right, #0f0c29, #302b63, #24243e)';
+          break;
+      }
+    }
+
+    // Default theme
+    setTheme('sunset');
+  </script>
+</body>
+</html>
